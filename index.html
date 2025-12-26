@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ランダム表示</title>
+</head>
+<body>
+
+<button onclick="pick()">ひく</button>
+<div id="result"></div>
+
+<script>
+const items = [
+  "アンケート回答1",
+  "アンケート回答2",
+  "アンケート回答3"
+];
+
+function pick() {
+  const i = Math.floor(Math.random() * items.length);
+  document.getElementById("result").textContent = items[i];
+}
+</script>
+
+</body>
+</html>
