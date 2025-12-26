@@ -4,60 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ランダム表示</title>
+
   <style>
-  body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;  /* 縦中央 */
-    align-items:center;      /* 横中央 */
-    text-align:center;
-    font-family: sans-serif;
-    padding: 24px;
-  }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;   /* 縦中央 */
+      align-items: center;       /* 横中央 */
+      text-align: center;
+      font-family: sans-serif;
+      background: #111;
+      color: #fff;
+      padding: 24px;
+    }
 
-  button{
-    font-size: 1.6rem;       /* 文字大きく */
-    padding: 16px 28px;      /* ボタン大きく */
-    border-radius: 14px;     /* 角丸 */
-    cursor: pointer;
-  }
+    .notice {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
 
-  #result{
-    margin-top: 24px;
-    font-size: 1.1rem;
-    max-width: 720px;
-    line-height: 1.7;
-    white-space: pre-wrap;   /* 改行を活かす（長文向け） */
-  }
-</style>
+    button {
+      font-size: 1.6rem;        /* ボタン文字大きめ */
+      padding: 18px 32px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+    }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #result {
+      margin-top: 28px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      max-width: 720px;
+      white-space: pre-wrap;    /* 改行をそのまま表示 */
+    }
+  </style>
 </head>
+
 <body>
 
-<button onclick="pick()">押したら共有！1回しか表示されないよ♪</button>
-<div id="result"></div>
+  <div class="notice">
+    引いたら必ず共有してね。<br>
+    1回しか表示されないよ！
+  </div>
 
-<script>
-const items = [
-  "ほぼなし",
-  "鏡を使ったプレイは何やろうかと。",
-  "キメセク、満員電車でこっそりご都合本番、ポリネシアンセックス",
-  "羞恥プレイ、マジックミラーとか",
-  "言ってない性癖の多いほうが…？やってみたいプレイは、恋人が今まで他でやってきたの、全部。上書きさせて。",
-"拘束されてみたい",
-"首絞り",
-"部活中にリモバイで遊んで、帰ってきた恋人に涙目で思い切り殴られたい",
-"後天性女体化矯正プレイ",
-"複数プレイはやってみたい",
-];
+  <button id="pickBtn" onclick="pick()">ひく</button>
 
-function pick() {
-  const i = Math.floor(Math.random() * items.length);
-  document.getElementById("result").textContent = items[i];
-}
-</script>
+  <div id="result"></div>
+
+  <script>
+    const items = [
+      "ほぼなし",
+      "鏡を使ったプレイは何やろうかと。",
+      "キメセク、満員電車でこっそりご都合本番、ポリネシアンセックス",
+      "羞恥プレイ、マジックミラーとか",
+      "言ってない性癖の多いほうが…？やってみたいプレイは、恋人が今まで他でやってきたの、全部。上書きさせて。",
+      "拘束されてみたい",
+      "首絞り",
+      "部活中にリモバイで遊んで、帰ってきた恋人に涙目で思い切り殴られたい",
+      "後天性女体化矯正プレイ",
+      "複数プレイはやってみたい"
+    ];
+
+    function pick() {
+      const i = Math.floor(Math.random() * items.length);
+      document.getElementById("result").textContent = items[i];
+
+      // 1回引いたらボタンを無効化
+      const btn = document.getElementById("pickBtn");
+      btn.disabled = true;
+      btn.textContent = "表示済み";
+    }
+  </script>
 
 </body>
 </html>
