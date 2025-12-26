@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ランダム表示</title>
 
   <style>
@@ -11,8 +11,8 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;   /* 縦中央 */
-      align-items: center;       /* 横中央 */
+      justify-content: center; /* 縦中央 */
+      align-items: center;     /* 横中央 */
       text-align: center;
       font-family: sans-serif;
       background: #111;
@@ -28,7 +28,7 @@
     }
 
     button {
-      font-size: 1.6rem;        /* ボタン文字大きめ */
+      font-size: 1.6rem;
       padding: 18px 32px;
       border-radius: 14px;
       border: none;
@@ -45,23 +45,28 @@
       font-size: 1.1rem;
       line-height: 1.7;
       max-width: 720px;
-      white-space: pre-wrap;    /* 改行をそのまま表示 */
+      white-space: pre-wrap; /* 改行をそのまま表示 */
+      word-break: break-word;
     }
   </style>
 </head>
 
 <body>
-
   <div class="notice">
-    引いたら共有！<br>
-    被ったら引き直しOK♪
+    引いたら必ず共有してね。<br />
+    1回しか表示されないよ！
   </div>
 
-  <button id="pickBtn" onclick="pick()">ひく</button>
+  <button id="pickBtn" type="button">ひく</button>
 
   <div id="result"></div>
 
   <script>
+    // ★ ゲームごとに変えたければ、この v1 を v2 にするだけで「別ゲーム扱い」になる
+    const LOCK_KEY = "random_ask_locked_v1";
+    const RESULT_KEY = "random_ask_result_v1";
+
+    // ★ ここにアンケート結果を1行ずつ入れる（"..." の中）
     const items = [
       "ほぼなし",
       "鏡を使ったプレイは何やろうかと。",
@@ -75,16 +80,37 @@
       "複数プレイはやってみたい"
     ];
 
-    function pick() {
-      const i = Math.floor(Math.random() * items.length);
-      document.getElementById("result").textContent = items[i];
+    const btn = document.getElementById("pickBtn");
+    const resultEl = document.getElementById("result");
 
-      // 1回引いたらボタンを無効化
-      const btn = document.getElementById("pickBtn");
+    function setLockedUI(text) {
+      resultEl.textContent = text;
       btn.disabled = true;
       btn.textContent = "表示済み";
     }
-  </script>
 
+    // すでに引いていたら、開いた瞬間に同じ結果を表示してロック
+    if (localStorage.getItem(LOCK_KEY) === "1") {
+      const saved = localStorage.getItem(RESULT_KEY) || "（表示済み）";
+      setLockedUI(saved);
+    }
+
+    btn.addEventListener("click", () => {
+      // 二重クリック防止
+      if (btn.disabled) return;
+
+      // 押した瞬間に無効化（連打対策）
+      btn.disabled = true;
+
+      const i = Math.floor(Math.random() * items.length);
+      const picked = items[i];
+
+      // 保存してロック
+      localStorage.setItem(LOCK_KEY, "1");
+      localStorage.setItem(RESULT_KEY, picked);
+
+      setLockedUI(picked);
+    });
+  </script>
 </body>
 </html>
