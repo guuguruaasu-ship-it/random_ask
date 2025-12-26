@@ -35,17 +35,12 @@
       cursor: pointer;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
     #result {
       margin-top: 28px;
       font-size: 1.1rem;
       line-height: 1.7;
       max-width: 720px;
-      white-space: pre-wrap; /* 改行をそのまま表示 */
+      white-space: pre-wrap; /* 改行そのまま */
       word-break: break-word;
     }
   </style>
@@ -54,7 +49,7 @@
 <body>
   <div class="notice">
     引いたら必ず共有してね。<br />
-    1回しか表示されないよ！
+    何回引いてもOKだよ！
   </div>
 
   <button id="pickBtn" type="button">ひく</button>
@@ -62,11 +57,7 @@
   <div id="result"></div>
 
   <script>
-    // ★ ゲームごとに変えたければ、この v1 を v2 にするだけで「別ゲーム扱い」になる
-    const LOCK_KEY = "random_ask_locked_v1";
-    const RESULT_KEY = "random_ask_result_v1";
-
-    // ★ ここにアンケート結果を1行ずつ入れる（"..." の中）
+    // ★ ここにアンケート結果を1行ずつ入れる
     const items = [
       "ほぼなし",
       "鏡を使ったプレイは何やろうかと。",
@@ -83,33 +74,9 @@
     const btn = document.getElementById("pickBtn");
     const resultEl = document.getElementById("result");
 
-    function setLockedUI(text) {
-      resultEl.textContent = text;
-      btn.disabled = true;
-      btn.textContent = "表示済み";
-    }
-
-    // すでに引いていたら、開いた瞬間に同じ結果を表示してロック
-    if (localStorage.getItem(LOCK_KEY) === "1") {
-      const saved = localStorage.getItem(RESULT_KEY) || "（表示済み）";
-      setLockedUI(saved);
-    }
-
     btn.addEventListener("click", () => {
-      // 二重クリック防止
-      if (btn.disabled) return;
-
-      // 押した瞬間に無効化（連打対策）
-      btn.disabled = true;
-
       const i = Math.floor(Math.random() * items.length);
-      const picked = items[i];
-
-      // 保存してロック
-      localStorage.setItem(LOCK_KEY, "1");
-      localStorage.setItem(RESULT_KEY, picked);
-
-      setLockedUI(picked);
+      resultEl.textContent = items[i];
     });
   </script>
 </body>
